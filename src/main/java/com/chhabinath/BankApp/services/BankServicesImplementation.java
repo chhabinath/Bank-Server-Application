@@ -67,6 +67,8 @@ public class BankServicesImplementation implements BankServices {
 
 		double updatedBalance = account.getBalance() + amount;
 		account.setBalance(updatedBalance);
+		Transaction[] transactions = account.getTransaction();
+		transactions[id] = new Transaction(id++, amount, "Deposit");
 		return updatedBalance;
 	}
 
@@ -83,6 +85,7 @@ public class BankServicesImplementation implements BankServices {
 	 * @throws InsufficientBalanceException if the account balance is less than the
 	 *                                      withdrawal amount
 	 */
+
 	@Override
 	public double withdraw(int accountNo, double amount) {
 		Account account = bankDao.getAccountByNumber(accountNo);
@@ -100,6 +103,8 @@ public class BankServicesImplementation implements BankServices {
 
 		double updatedBalance = account.getBalance() - amount;
 		account.setBalance(updatedBalance);
+		Transaction[] transactions = account.getTransaction();
+		transactions[id] = new Transaction(id++, amount, "Deposit");
 		return updatedBalance;
 	}
 
