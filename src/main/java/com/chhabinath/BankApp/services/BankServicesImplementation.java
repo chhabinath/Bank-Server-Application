@@ -104,7 +104,7 @@ public class BankServicesImplementation implements BankServices {
 		double updatedBalance = account.getBalance() - amount;
 		account.setBalance(updatedBalance);
 		Transaction[] transactions = account.getTransaction();
-		transactions[id] = new Transaction(id++, amount, "Deposit");
+		transactions[id] = new Transaction(id++, amount, "withdraw");
 		return updatedBalance;
 	}
 
@@ -136,10 +136,33 @@ public class BankServicesImplementation implements BankServices {
 		return withdraw(sourceAccountNo, amount);
 	}
 
+	/**
+	 * Retrieves the last 10 transactions for the specified account number.
+	 *
+	 * @param accountNo the account number for which to retrieve the transactions
+	 * @return an array of the last 10 transactions for the account
+	 * @throws InvalidAccountException if the account number is invalid or does not
+	 *                                 exist
+	 */
+
 	@Override
 	public Transaction[] getAllTransactionDetails(int accountNo) {
-		// TODO Auto-generated method stub
-		return null;
+		Account account = bankDao.getAccountByNumber(accountNo);
+		if (account == null) {
+			throw new InvalidAccountException("Account Not Found");
+		}
+
+		Transaction[] transactions = account.getTransaction();
+		int length = transactions.length;
+		int startIndex = Math.max(0, length - 10); // Start index for the last 10 transactions
+		int numTransactions = Math.min(10, length); // Number of transactions to retrieve
+
+		Transaction[] last10Transactions = new Transaction[numTransactions];
+		for (int i = 0; i < numTransactions; i++) {
+			last10Transactions[i] = transactions[startIndex + i];
+		}
+
+		return last10Transactions;
 	}
 
 }
