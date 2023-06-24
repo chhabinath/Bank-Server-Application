@@ -3,8 +3,11 @@
  */
 package com.chhabinath.BankApp.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.chhabinath.BankApp.beans.Account;
-import com.chhabinath.BankApp.database.ArrayDatabase;
+import com.chhabinath.BankApp.database.CollectionsDatabase;
 
 /**
  * @author Chhabinath Sahoo
@@ -12,10 +15,13 @@ import com.chhabinath.BankApp.database.ArrayDatabase;
  */
 public class BankDaoImplementation implements BankDao{
 
-	ArrayDatabase arrayDatabase;
+	private List<Account> accountList;
+	
+	CollectionsDatabase collectionsDatabase;
 
 	public BankDaoImplementation() {
-		arrayDatabase = new ArrayDatabase();
+		 accountList = new ArrayList<>();
+		 collectionsDatabase = new CollectionsDatabase();
 	}
 
 	@Override
@@ -26,10 +32,10 @@ public class BankDaoImplementation implements BankDao{
 	@Override
 	public Account getAccountByNumber(int accountNumber) {
 
-		Account[] account = arrayDatabase.getAccount();
-		for (int i = 0; i < account.length; i++) {
-			if (account[i].getAccountNumber() == accountNumber)
-				return account[i];
+		accountList.addAll(collectionsDatabase.getAccount());
+		for (Account account : accountList) {
+			if (account.getAccountNumber() == accountNumber)
+				return account;
 		}
 		return null;
 	}

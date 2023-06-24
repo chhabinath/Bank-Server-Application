@@ -1,10 +1,12 @@
 package com.chhabinath.BankApp.services;
 
+import java.util.List;
+
 import com.chhabinath.BankApp.beans.Account;
 import com.chhabinath.BankApp.beans.Transaction;
 import com.chhabinath.BankApp.dao.BankDao;
 import com.chhabinath.BankApp.dao.BankDaoImplementation;
-import com.chhabinath.BankApp.database.ArrayDatabase;
+import com.chhabinath.BankApp.database.CollectionsDatabase;
 import com.chhabinath.BankApp.exception.InsufficientBalanceException;
 import com.chhabinath.BankApp.exception.InvalidAccountException;
 import com.chhabinath.BankApp.exception.NegativeBalanceException;
@@ -22,7 +24,7 @@ public class BankServicesImplementation implements BankServices {
 	}
 
 	public static int id = 0;
-	ArrayDatabase arrayDatabase = new ArrayDatabase();
+	CollectionsDatabase arrayDatabase = new CollectionsDatabase();
 
 	/**
 	 * Retrieves the balance of the specified account number.
@@ -67,8 +69,7 @@ public class BankServicesImplementation implements BankServices {
 
 		double updatedBalance = account.getBalance() + amount;
 		account.setBalance(updatedBalance);
-		Transaction[] transactions = account.getTransaction();
-		transactions[id] = new Transaction(id++, amount, "Deposit");
+		account.getTransaction().add(new Transaction(id++, amount, "Deposit")); 
 		return updatedBalance;
 	}
 
@@ -103,8 +104,7 @@ public class BankServicesImplementation implements BankServices {
 
 		double updatedBalance = account.getBalance() - amount;
 		account.setBalance(updatedBalance);
-		Transaction[] transactions = account.getTransaction();
-		transactions[id] = new Transaction(id++, amount, "withdraw");
+		account.getTransaction().add(new Transaction(id++, amount, "Withdraw")); 
 		return updatedBalance;
 	}
 
@@ -152,17 +152,12 @@ public class BankServicesImplementation implements BankServices {
 			throw new InvalidAccountException("Account Not Found");
 		}
 
-		Transaction[] transactions = account.getTransaction();
-		int length = transactions.length;
+		List<Transaction> transactions = account.getTransaction();
+		int length = transactions.size();
 		int startIndex = Math.max(0, length - 10); // Start index for the last 10 transactions
 		int numTransactions = Math.min(10, length); // Number of transactions to retrieve
 
-		Transaction[] last10Transactions = new Transaction[numTransactions];
-		for (int i = 0; i < numTransactions; i++) {
-			last10Transactions[i] = transactions[startIndex + i];
-		}
-
-		return last10Transactions;
+		return transactions.subList(startIndex, startIndex+numTransactions).toArray(new Transaction[numTransactions]);
 	}
 
 }

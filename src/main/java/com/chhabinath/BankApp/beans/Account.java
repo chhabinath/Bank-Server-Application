@@ -1,6 +1,6 @@
 package com.chhabinath.BankApp.beans;
 
-import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Chhabinath Sahoo
@@ -13,11 +13,10 @@ public class Account {
 	private double balance;
 
 	private Customer customer;
-	private Transaction[] transaction;
+	private List<Transaction> transaction;
 
 	public Account() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -27,7 +26,7 @@ public class Account {
 	 * @param customer
 	 * @param transaction
 	 */
-	public Account(int accountId, int accountNumber, double balance, Customer customer,Transaction[] transaction) {
+	public Account(int accountId, int accountNumber, double balance, Customer customer, List<Transaction> transaction) {
 		super();
 		this.accountId = accountId;
 		this.accountNumber = accountNumber;
@@ -95,21 +94,21 @@ public class Account {
 	/**
 	 * @return the transaction
 	 */
-	public Transaction[] getTransaction() {
+	public List<Transaction> getTransaction() {
 		return transaction;
 	}
 
 	/**
 	 * @param transaction the transaction to set
 	 */
-	public void setTransaction(Transaction[] transaction) {
+	public void setTransaction(List<Transaction> transaction) {
 		this.transaction = transaction;
 	}
 
 	@Override
 	public String toString() {
 		return "Account [accountId=" + accountId + ", accountNumber=" + accountNumber + ", balance=" + balance
-				+ ", customer=" + customer + ", transaction=" + Arrays.toString(transaction) + "]";
+				+ ", customer=" + customer + ", transaction=" + transaction + "]";
 	}
 
 }
